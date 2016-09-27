@@ -57,13 +57,13 @@ exports.commands = {
 		if (scavengers.status !== 'on') return this.errorReply('There is no active scavenger hunt.');
 		if (user.userid in scavengers.participants) return this.errorReply('You are already participating in the current scavenger hunt.');
 		scavengers.participants[user.userid] = {room: 0};
-		this.sendReply('You joined the scavenger hunt! Use the command /scavenge to answer. The first hint is: ' + scavengers.hints[0]);
+		this.errorReply('You joined the scavenger hunt! Use the command /scavenge to answer. The first hint is: ' + scavengers.hints[0]);
 	},
 	scavenge: function (target, room, user) {
 		if (room.id !== 'scavengers') return this.errorReply('This command can only be used in the Scavengers room.');
 		if (scavengers.status !== 'on') return this.errorReply('There is no active scavenger hunt.');
 		if (!scavengers.participants[user.userid]) return this.errorReply('You are not participating in the current scavenger hunt. Use the command /joinhunt to participate.');
-		if (scavengers.participants[user.userid].room >= 3) return this.sendReply('You have already finished!');
+		if (scavengers.participants[user.userid].room >= 3) return this.errorReply('You have already finished!');
 		target = toId(target);
 		let roomnum = scavengers.participants[user.userid].room;
 		if (scavengers.answers[roomnum] === target) {
@@ -81,7 +81,7 @@ exports.commands = {
 				Rooms('scavengers').addRaw('<div class="broadcast-blue"><strong>' + result + '</strong></div>');
 			}
 		} else {
-			this.sendReply('That is not the answer - try again!');
+			this.errorReply('That is not the answer - try again!');
 		}
 	},
 	scavengerhint: 'scavengerstatus',
